@@ -53,6 +53,105 @@
         .close-button:hover {
             background-color: rgba(0,0,0,0.7);
         }
+
+        /* Carousel specific styles */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Adjust as needed for desired carousel width */
+            margin: auto;
+            overflow: hidden; /* Hide overflowing images */
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #f0f0f0; /* Light background for carousel area */
+            padding-bottom: 1.5rem; /* Space for pagination dots */
+            display: flex; /* Use flexbox to center image vertically */
+            align-items: center; /* Center image vertically */
+            min-height: 250px; /* Minimum height for the carousel to prevent collapse */
+        }
+
+        .carousel-slide {
+            width: 100%;
+            display: none; /* Hidden by default */
+            transition: opacity 0.5s ease-in-out;
+            text-align: center; /* Center content horizontally */
+        }
+
+        .carousel-slide.active {
+            display: block; /* Show active slide */
+            opacity: 1;
+        }
+
+        .carousel-slide img {
+            max-width: 100%;
+            height: auto;
+            max-height: 400px; /* Limit image height within carousel */
+            object-fit: contain;
+            border-radius: 0.75rem;
+            margin: auto; /* Center image horizontally */
+        }
+
+        .carousel-caption {
+            margin-top: 0.5rem;
+            font-size: 0.875rem; /* text-sm */
+            color: #4a5568; /* gray-600 */
+            text-align: center;
+            padding: 0 1rem;
+            min-height: 40px; /* Allocate space for captions */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 0.75rem 0.5rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            line-height: 1;
+            border-radius: 0.375rem; /* rounded-md */
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+
+        .carousel-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .carousel-button.prev {
+            left: 0.5rem;
+        }
+
+        .carousel-button.next {
+            right: 0.5rem;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #2563eb; /* blue-600 */
+        }
     </style>
     <!-- Dark Mode Script -->
     <script>
@@ -72,13 +171,13 @@
         // Listen for changes in the system's color scheme preference
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
-        // JavaScript for Modal functionality
+        // JavaScript for Modal and Carousel functionality
         document.addEventListener('DOMContentLoaded', () => {
+            // Modal functionality
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
             const closeBtn = document.querySelector('.close-button');
 
-            // Get all image links
             const imageLinks = document.querySelectorAll('.image-link');
 
             imageLinks.forEach(link => {
@@ -89,13 +188,11 @@
                 });
             });
 
-            // Close modal when close button is clicked
             closeBtn.addEventListener('click', () => {
                 modal.classList.remove('show');
                 modalImg.src = ''; // Clear image src
             });
 
-            // Close modal when clicking outside the image content
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.classList.remove('show');
@@ -103,13 +200,62 @@
                 }
             });
 
-            // Close modal with Escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && modal.classList.contains('show')) {
                     modal.classList.remove('show');
                     modalImg.src = ''; // Clear image src
                 }
             });
+
+            // Carousel functionality
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dotsContainer = document.querySelector('.carousel-dots');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                    if (dotsContainer.children[i]) {
+                        dotsContainer.children[i].classList.remove('active');
+                    }
+                });
+
+                if (index >= slides.length) {
+                    currentSlide = 0;
+                } else if (index < 0) {
+                    currentSlide = slides.length - 1;
+                } else {
+                    currentSlide = index;
+                }
+
+                slides[currentSlide].classList.add('active');
+                if (dotsContainer.children[currentSlide]) {
+                    dotsContainer.children[currentSlide].classList.add('active');
+                }
+            }
+
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+
+            function prevSlide() {
+                showSlide(currentSlide - 1);
+            }
+
+            // Create dots for navigation
+            slides.forEach((_, i) => {
+                const dot = document.createElement('span');
+                dot.classList.add('dot');
+                dot.addEventListener('click', () => showSlide(i));
+                dotsContainer.appendChild(dot);
+            });
+
+            // Initial display
+            showSlide(currentSlide);
+
+            // Attach event listeners for carousel buttons
+            document.querySelector('.carousel-button.prev').addEventListener('click', prevSlide);
+            document.querySelector('.carousel-button.next').addEventListener('click', nextSlide);
         });
     </script>
 </head>
@@ -146,7 +292,7 @@
             <ul class="list-disc list-inside text-gray-700 mb-4 space-y-4 leading-relaxed pl-4 dark:text-gray-300">
                 <li>
                     The Main and Harris Hill intersection is a hazardous 5-point configuration. Already a recognized problem for state and county traffic authorities, a new Tim Hortons will only worsen existing congestion.
-                    <div class="mt-4 flex flex-col items-center">
+                    <div class="mt-4 flex flex-col items-center w-full">
                         <a href="cop-accident1.jpg" class="image-link block w-full max-w-lg">
                             <img src="cop-accident1.jpg" alt="Scene of a police car involved accident, indicating existing traffic issues" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
                         </a>
@@ -157,7 +303,7 @@
                 </li>
                 <li>
                     Its immediate proximity to three churches and two schools means constant pedestrian and vehicle traffic.
-                    <div class="mt-4 flex flex-col items-center">
+                    <div class="mt-4 flex flex-col items-center w-full">
                         <a href="school-pickup-intoroad.jpg" class="image-link block w-full max-w-lg">
                             <img src="school-pickup-intoroad.jpg" alt="Car during school pickup extending into the road, illustrating traffic near schools" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
                         </a>
@@ -168,45 +314,51 @@
                 </li>
                 <li>
                     Alarmingly, vehicles frequently drive on sidewalks at this intersection, creating dangerous conditions. Children, even with a dedicated crossing guard present, have been nearly struck by cars navigating this unsafe intersection.
-                    <div class="mt-4 flex flex-col items-center">
-                        <a href="wrong-way.jpg" class="image-link">
-                            <img src="wrong-way.jpg" alt="Car driving wrong way on Nottingham Terrace, a one-way street" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
-                        </a>
-                        <p class="text-sm text-gray-600 mt-2 text-center w-full dark:text-gray-400">
-                            Example of traffic hazards: A driver going the wrong way on Nottingham Terrace, a one-way street near the intersection.
-                        </p>
-                    </div>
-                    <div class="mt-4 flex flex-col items-center">
-                        <a href="sidewalk-no-curb1.jpg" class="image-link">
-                            <img src="sidewalk-no-curb1.jpg" alt="Sidewalk without a curb, showing easy vehicle access" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
-                        </a>
-                        <p class="text-sm text-gray-600 mt-2 text-center w-full dark:text-gray-400">
-                            Sidewalks with no curbs, making it easy for vehicles to drive onto them.
-                        </p>
-                    </div>
-                    <div class="mt-4 flex flex-col items-center">
-                        <a href="winter-car-tracks-sidewalk1.jpg" class="image-link">
-                            <img src="winter-car-tracks-sidewalk1.jpg" alt="Car tracks clearly visible on a snowy sidewalk" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
-                        </a>
-                        <p class="text-sm text-gray-600 mt-2 text-center w-full dark:text-gray-400">
-                            Evidence of vehicles driving on sidewalks during winter conditions.
-                        </p>
-                    </div>
-                     <div class="mt-4 flex flex-col items-center">
-                        <a href="winter-car-tracks-sidewalk2.jpg" class="image-link">
-                            <img src="winter-car-tracks-sidewalk2.jpg" alt="Another view of car tracks on a snowy sidewalk" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
-                        </a>
-                        <p class="text-sm text-gray-600 mt-2 text-center w-full dark:text-gray-400">
-                            Further evidence of vehicles driving on sidewalks during winter conditions.
-                        </p>
-                    </div>
-                     <div class="mt-4 flex flex-col items-center">
-                        <a href="winter-car-tracks-sidewalk3.jpg" class="image-link">
-                            <img src="winter-car-tracks-sidewalk3.jpg" alt="Third image showing car tracks on a snowy sidewalk" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
-                        </a>
-                        <p class="text-sm text-gray-600 mt-2 text-center w-full dark:text-gray-400">
-                            Additional visual proof of vehicles driving on sidewalks during winter conditions.
-                        </p>
+                    <!-- Carousel for Sidewalk Images -->
+                    <div class="carousel-container mt-4">
+                        <div class="carousel-slide active">
+                            <a href="wrong-way.jpg" class="image-link block">
+                                <img src="wrong-way.jpg" alt="Car driving wrong way on Nottingham Terrace, a one-way street" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
+                            </a>
+                            <p class="carousel-caption dark:text-gray-400">
+                                Example of traffic hazards: A driver going the wrong way on Nottingham Terrace, a one-way street near the intersection.
+                            </p>
+                        </div>
+                        <div class="carousel-slide">
+                            <a href="sidewalk-no-curb1.jpg" class="image-link block">
+                                <img src="sidewalk-no-curb1.jpg" alt="Sidewalk without a curb, showing easy vehicle access" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
+                            </a>
+                            <p class="carousel-caption dark:text-gray-400">
+                                Sidewalks with no curbs, making it easy for vehicles to drive onto them.
+                            </p>
+                        </div>
+                        <div class="carousel-slide">
+                            <a href="winter-car-tracks-sidewalk1.jpg" class="image-link block">
+                                <img src="winter-car-tracks-sidewalk1.jpg" alt="Car tracks clearly visible on a snowy sidewalk" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
+                            </a>
+                            <p class="carousel-caption dark:text-gray-400">
+                                Evidence of vehicles driving on sidewalks during winter conditions.
+                            </p>
+                        </div>
+                        <div class="carousel-slide">
+                            <a href="winter-car-tracks-sidewalk2.jpg" class="image-link block">
+                                <img src="winter-car-tracks-sidewalk2.jpg" alt="Another view of car tracks on a snowy sidewalk" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
+                            </a>
+                            <p class="carousel-caption dark:text-gray-400">
+                                Further evidence of vehicles driving on sidewalks during winter conditions.
+                            </p>
+                        </div>
+                        <div class="carousel-slide">
+                            <a href="winter-car-tracks-sidewalk3.jpg" class="image-link block">
+                                <img src="winter-car-tracks-sidewalk3.jpg" alt="Third image showing car tracks on a snowy sidewalk" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
+                            </a>
+                            <p class="carousel-caption dark:text-gray-400">
+                                Additional visual proof of vehicles driving on sidewalks during winter conditions.
+                            </p>
+                        </div>
+                        <button class="carousel-button prev">&#10094;</button>
+                        <button class="carousel-button next">&#10095;</button>
+                        <div class="carousel-dots"></div>
                     </div>
                 </li>
                 <li>
@@ -279,7 +431,7 @@
             </p>
             <ul class="list-disc list-inside text-gray-700 mb-4 space-y-2 leading-relaxed pl-4 dark:text-gray-300">
                 <li>
-                    In 2014, Town Supervisor Casilio vocally opposed a similar Tim Hortons proposal at 8250 Main Street (approximately 0.2 miles from his residence). He explicitly voiced concerns that "<strong class="font-semibold text-gray-900 dark:text-white">60 customers or more</strong>" would cause a "traffic jam" on Westwood Road (<a href="https://www4.erie.gov/clarence/sites/www4.erie.gov.clarence/files/2023-02/ws-tb_5-14-14.pdf" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Clarence Town Board Minutes, 05/14/14</a>).
+                    In 2014, Town Supervisor Casilio vocally opposed a similar Tim Hortons proposal at 8250 Main Street (approximately 0.2 miles from his residence). He explicitly voiced concerns that "<strong class="font-semibold text-gray-900 dark:text-white">60 customers or more</strong>" would cause a "traffic jam" on Westwood Road (<a href="https://www4.erie.gov/clarence/sites/www4.erie.gov.clarence/files/2024-11/pb-minutes-10-16-2024.pdf" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Clarence Town Board Minutes, 05/14/14</a>).
                 </li>
                 <li>
                     The current proposal at 8503 Main Street projects almost double that traffic (114 vehicle trips), at an intersection far more dangerous and congested than the site he previously opposed. Yet, there seems to be less opposition from him on this significantly higher-impact project.
