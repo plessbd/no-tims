@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printable Business Cards: No to Timmys</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for better readability */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Light background for screen viewing */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        /* Container for the printable area, simulating 8.5x11 paper */
+        .print-area-container {
+            width: 8.5in; /* Standard letter width */
+            height: 11in; /* Standard letter height */
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 1rem; /* Margin around the paper on screen for visual separation */
+            box-sizing: border-box; /* Include padding in dimensions */
+            display: flex; /* Use flex for screen layout */
+            flex-wrap: wrap;
+            justify-content: space-between; /* Distribute items with space between them horizontally */
+            align-content: space-between; /* Distribute rows with space between them vertically */
+            /* Calculated padding to achieve precise layout for 2x5 cards on 8.5x11 */
+            padding: 0.5in 0.75in;
+        }
+
+        /* Styling for each individual business card */
+        .business-card {
+            width: 3.5in; /* Standard business card width */
+            height: 2in; /* Standard business card height */
+            border: 0.5px solid #999; /* Solid border for clear cutting guide (darker gray) */
+            display: flex;
+            flex-direction: row; /* Horizontal layout for QR and text */
+            justify-content: center; /* Center content horizontally within the card */
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box; /* Include padding in dimensions */
+            padding: 0.25rem; /* Small internal padding for content */
+            overflow: hidden; /* Ensure content stays within borders */
+            /* Margin between cards, handled by print-area-container's space-between on screen */
+            margin: 0;
+        }
+
+        .business-card h2 {
+            font-size: 2rem; /* Larger "No to Timmys" */
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.15rem; /* Reduced margin for tighter fit */
+            line-height: 1.1;
+            flex-shrink: 0; /* Prevent text from shrinking too much */
+        }
+
+        .business-card img {
+            width: 105px; /* Slightly larger QR code for readability */
+            height: 105px;
+            margin-right: 0.7rem; /* Space between QR and text */
+            border-radius: 0.25rem;
+            flex-shrink: 0; /* Prevent QR code from shrinking */
+        }
+
+        .business-card .text-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1; /* Allow text content to take available space */
+            text-align: center;
+        }
+
+        .business-card p {
+            font-size: 1rem; /* Larger for URL, clear */
+            color: #555;
+            word-break: break-all; /* Ensure long URL breaks correctly */
+            line-height: 1.1;
+        }
+
+        /* Print specific styles */
+        @media print {
+            body {
+                background-color: white;
+                margin: 0;
+                padding: 0;
+                width: 8.5in; /* Explicitly set body size for print */
+                height: 11in;
+            }
+            /* Crucial: Set page margins to a minimal value for precise layout control */
+            @page {
+                margin: 0.05in; /* Minimal margin to avoid cutting content on some printers */
+                size: letter; /* Ensures 8.5x11 inch paper size */
+            }
+            .print-area-container {
+                box-shadow: none; /* No shadow on print */
+                margin: 0; /* No margin on actual paper */
+                width: auto; /* Allow auto width to fit within page margins */
+                height: auto; /* Allow auto height */
+                padding: 0; /* No internal padding on the container in print, rely on card margins */
+                display: block; /* Change to block layout for predictable flow */
+            }
+            .business-card {
+                border-color: #999; /* Darker solid border for clear visibility on print */
+                margin: 0; /* Reset margins for individual control */
+                float: left; /* Use float for reliable side-by-side positioning */
+            }
+
+            /* Set explicit horizontal margins for columns */
+            .business-card:nth-child(2n+1) { /* First card in each row */
+                margin-left: 0.75in;
+                margin-right: 0.25in;
+                clear: left; /* Ensures new row starts correctly */
+            }
+            .business-card:nth-child(2n) { /* Second card in each row */
+                margin-left: 0; /* No left margin, it abuts the right margin of the previous card */
+                margin-right: 0.5in;
+            }
+
+            /* Set explicit vertical margins for rows */
+            .business-card:nth-child(1), .business-card:nth-child(2) {
+                margin-top: 0.5in; /* Top margin for the first row */
+            }
+            .business-card:nth-child(n+3) { /* All cards from the 3rd onwards (rows 2-5) */
+                margin-top: 0.25in; /* Gap between rows */
+            }
+            /* No margin-bottom needed, as the next card's margin-top handles spacing */
+        }
+    </style>
+</head>
+<body>
+    <div class="print-area-container">
+        <!-- Loop 10 times for 10 cards per page -->
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+        <div class="business-card">
+            <img src="https://quickchart.io/qr?text=https://no-timmys-harris-hill.org&size=150" alt="QR Code for no-timmys-harris-hill.org">
+            <div class="text-content">
+                <h2>No to Timmys</h2>
+                <p>no-timmys-harris-hill.org</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
