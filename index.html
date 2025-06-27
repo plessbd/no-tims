@@ -155,7 +155,7 @@
     </style>
     <!-- Dark Mode Script -->
     <script>
-        // Function to set or remove the 'dark' class based on preference
+        /* Function to set or remove the 'dark' class based on preference */
         function applyTheme() {
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             if (prefersDark) {
@@ -165,15 +165,15 @@
             }
         }
 
-        // Apply theme on initial load
+        /* Apply theme on initial load */
         applyTheme();
 
-        // Listen for changes in the system's color scheme preference
+        /* Listen for changes in the system's color scheme preference */
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
-        // JavaScript for Modal and Carousel functionality
+        /* JavaScript for Modal and Carousel functionality */
         document.addEventListener('DOMContentLoaded', () => {
-            // Modal functionality
+            /* Modal functionality */
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
             const closeBtn = document.querySelector('.close-button');
@@ -182,7 +182,7 @@
 
             imageLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault(); // Prevent opening in new tab
+                    e.preventDefault(); /* Prevent opening in new tab */
                     modal.classList.add('show');
                     modalImg.src = link.href;
                 });
@@ -190,24 +190,24 @@
 
             closeBtn.addEventListener('click', () => {
                 modal.classList.remove('show');
-                modalImg.src = ''; // Clear image src
+                modalImg.src = ''; /* Clear image src */
             });
 
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.classList.remove('show');
-                    modalImg.src = ''; // Clear image src
+                    modalImg.src = ''; /* Clear image src */
                 }
             });
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && modal.classList.contains('show')) {
                     modal.classList.remove('show');
-                    modalImg.src = ''; // Clear image src
+                    modalImg.src = ''; /* Clear image src */
                 }
             });
 
-            // Carousel functionality
+            /* Carousel functionality */
             const slides = document.querySelectorAll('.carousel-slide');
             const dotsContainer = document.querySelector('.carousel-dots');
             let currentSlide = 0;
@@ -242,7 +242,7 @@
                 showSlide(currentSlide - 1);
             }
 
-            // Create dots for navigation
+            /* Create dots for navigation */
             slides.forEach((_, i) => {
                 const dot = document.createElement('span');
                 dot.classList.add('dot');
@@ -250,24 +250,24 @@
                 dotsContainer.appendChild(dot);
             });
 
-            // Initial display
+            /* Initial display */
             showSlide(currentSlide);
 
-            // Attach event listeners for carousel buttons
+            /* Attach event listeners for carousel buttons */
             document.querySelector('.carousel-button.prev').addEventListener('click', prevSlide);
             document.querySelector('.carousel-button.next').addEventListener('click', nextSlide);
         });
     </script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8 dark:bg-gray-900 dark:text-gray-200">
-    <div class="bg-white shadow-lg rounded-xl p-6 sm:p-8 md:p-10 max-w-5xl w-full mx-auto my-8 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen px-4 py-8 dark:bg-gray-900 dark:text-gray-200">
+    <div class="bg-white shadow-lg rounded-xl p-6 sm:p-8 md:p-10 w-full max-w-4xl mx-auto border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 text-center dark:text-white">
             Tim Hortons at Main & Harris Hill: Community Concerns
         </h1>
 
         <div class="mb-8 text-center">
             <a href="https://chng.it/67rp2hg49y" target="_blank" rel="noopener noreferrer"
-               class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg sm:text-xl shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+               class="inline-block w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg sm:text-xl shadow-md transition duration-300 ease-in-out transform hover:scale-105">
                 Sign the Petition Against This Proposal!
             </a>
         </div>
@@ -275,7 +275,7 @@
         <!-- Image of yard sign with updated alt text and styling -->
         <div class="mb-8 flex flex-col items-center">
             <a href="our-neighborhood.jpg" class="image-link block w-full max-w-lg">
-                <img src="our-neighborhood.jpg" alt="Our neighborhood is worth more than a cup of coffee" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
+                <img src="our-neighborhood.jpg" alt="Our neighborhood is worth more than a cup of coffee" class="rounded-lg shadow-md w-full h-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
             </a>
             <p class="text-sm text-gray-600 mt-2 text-center dark:text-gray-400">
                 As highlighted in recent articles by the <a href="https://buffalonews.com/news/local/business/development/article_37fc5736-59ae-41cd-9bc4-96c2b685384c.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Buffalo News</a> and the <a href="https://www.beenews.com/clarence_bee/news/new-tim-hortons-proposal-submitted-for-main-harris-hill/article_1cf87001-bd2a-44ee-b159-d15e6e649afa.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Bee News</a>, our neighborhood truly believes it is worth more than a cup of coffee.
@@ -294,7 +294,7 @@
                     The Main and Harris Hill intersection is a hazardous 5-point configuration. Already a recognized problem for state and county traffic authorities, a new Tim Hortons will only worsen existing congestion.
                     <div class="mt-4 flex flex-col items-center w-full">
                         <a href="cop-accident1.jpg" class="image-link block w-full max-w-lg">
-                            <img src="cop-accident1.jpg" alt="Scene of a police car involved accident, indicating existing traffic issues" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
+                            <img src="cop-accident1.jpg" alt="Scene of a police car involved accident, indicating existing traffic issues" class="rounded-lg shadow-md w-full h-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
                         </a>
                         <p class="text-sm text-gray-600 mt-2 text-center w-full dark:text-gray-400">
                             An example of existing traffic hazards in the area.
@@ -305,7 +305,7 @@
                     Its immediate proximity to three churches and two schools means constant pedestrian and vehicle traffic.
                     <div class="mt-4 flex flex-col items-center w-full">
                         <a href="school-pickup-intoroad.jpg" class="image-link block w-full max-w-lg">
-                            <img src="school-pickup-intoroad.jpg" alt="Car during school pickup extending into the road, illustrating traffic near schools" class="rounded-lg shadow-md w-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
+                            <img src="school-pickup-intoroad.jpg" alt="Car during school pickup extending into the road, illustrating traffic near schools" class="rounded-lg shadow-md w-full h-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/600x400/CCCCCC/333333?text=Image+Not+Found';">
                         </a>
                         <p class="text-sm text-gray-600 mt-2 text-center w-full dark:text-gray-400">
                             School pickup traffic extending into the road, highlighting existing congestion near schools.
@@ -434,7 +434,7 @@
             </p>
             <ul class="list-disc list-inside text-gray-700 mb-4 space-y-2 leading-relaxed pl-4 dark:text-gray-300">
                 <li>
-                    In 2014, Town Supervisor Casilio vocally opposed a proposal for a **Tim Hortons drive-thru facility with a gas fueling station and convenience store at 8250 Main Street**, known as "Kenyon's" at the northeast corner of Main Street and Westwood Road. The applicant was proposing to demolish the existing structure to construct a new convenience store with a Tim Hortons drive-thru. This location is approximately 0.2 miles from his residence. He explicitly voiced concerns that "<strong class="font-semibold text-gray-900 dark:text-white">60 customers or more</strong>" would cause a "traffic jam" on Westwood Road (<a href="https://www4.erie.gov/clarence/sites/www4.erie.gov.clarence/files/2024-11/pb-minutes-10-16-2024.pdf" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Clarence Town Board Minutes, 05/14/14</a>).
+                    In 2014, Town Supervisor Casilio vocally opposed a proposal for a **Tim Hortons drive-thru facility with a gas fueling station and convenience store at 8250 Main Street**, known as "Kenyon's" at the northeast corner of Main Street and Westwood Road. The applicant was proposing to demolish the existing structure to construct a new convenience store with a Tim Hortons drive-thru. This location is approximately 0.2 miles from his residence. He explicitly voiced concerns that "<strong class="font-semibold text-gray-900 dark:text-white">60 customers or more</strong>" would cause a "traffic jam" on Westwood Road (<a href="https://www4.erie.gov/clarence/sites/www4.erie.gov.clarence/files/2024-11/pb-minutes-10-16-2024.pdf" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Clarence Planning Board Minutes, 05/14/14</a>).
                 </li>
                 <li>
                     The lot at 8250 Main Street, which was the subject of Town Supervisor Casilio's past opposition, has **sat empty for nearly a decade now**. This stands in stark contrast to his often-stated position about ensuring commercial lots are utilized.
@@ -465,4 +465,3 @@
     </div>
 </body>
 </html>
-```I've updated the Canvas document to include the point about the previous lot sitting empty for almost a decade, highlighting the inconsistency in Town Supervisor Casilio's stan
