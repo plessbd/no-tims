@@ -11,32 +11,136 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        /* Styles for the modal (popup) */
+        .modal {
+            position: fixed;
+            z-index: 1000; /* High z-index to appear on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8); /* Dark overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain; /* Ensure image scales within modal */
+            border-radius: 0.75rem; /* rounded-xl from Tailwind */
+        }
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001; /* Above the image */
+            padding: 0.5rem;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .close-button:hover {
+            background-color: rgba(0,0,0,0.7);
+        }
     </style>
+    <!-- Dark Mode Script -->
+    <script>
+        // Function to set or remove the 'dark' class based on preference
+        function applyTheme() {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (prefersDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        // Apply theme on initial load
+        applyTheme();
+
+        // Listen for changes in the system's color scheme preference
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+
+        // JavaScript for Modal functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const closeBtn = document.querySelector('.close-button');
+
+            // Get all image links
+            const imageLinks = document.querySelectorAll('.image-link');
+
+            imageLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent opening in new tab
+                    modal.classList.add('show');
+                    modalImg.src = link.href;
+                });
+            });
+
+            // Close modal when close button is clicked
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('show');
+                modalImg.src = ''; // Clear image src
+            });
+
+            // Close modal when clicking outside the image content
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                    modalImg.src = ''; // Clear image src
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    modal.classList.remove('show');
+                    modalImg.src = ''; // Clear image src
+                }
+            });
+        });
+    </script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
-    <div class="bg-white shadow-lg rounded-xl p-6 sm:p-8 md:p-10 max-w-3xl w-full mx-auto my-8 border border-gray-200">
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8 dark:bg-gray-900 dark:text-gray-200">
+    <div class="bg-white shadow-lg rounded-xl p-6 sm:p-8 md:p-10 max-w-3xl w-full mx-auto my-8 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center dark:text-white">
             Tim Hortons at Main & Harris Hill: Community Concerns
         </h1>
 
         <!-- Image of yard sign -->
         <div class="mb-8 flex justify-center">
-            <img src="our-neighborhood.jpg" alt="Neighborhood Worth More Than Coffee - No Tim Hortons Drive Thru" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
+            <a href="our-neighborhood.jpg" class="image-link">
+                <img src="our-neighborhood.jpg" alt="Neighborhood Worth More Than Coffee - No Tim Hortons Drive Thru" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
+            </a>
         </div>
 
         <div class="mb-8">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 dark:text-white">
                 Neighborhood Impact and Safety Issues
             </h2>
-            <p class="text-gray-700 mb-4 leading-relaxed">
-                The proposed Tim Hortons location at <strong class="font-semibold text-gray-900">8503 Main Street, at the corner of Main and Harris Hill</strong>, raises significant concerns for our community. This is not just about another coffee shop; it's about the profound impact on an already strained intersection and the safety of our residents, especially children.
+            <p class="text-gray-700 mb-4 leading-relaxed dark:text-gray-300">
+                The proposed Tim Hortons location at <strong class="font-semibold text-gray-900 dark:text-white">8503 Main Street, at the corner of Main and Harris Hill</strong>, raises significant concerns for our community. This is not just about another coffee shop; it's about the profound impact on an already strained intersection and the safety of our residents, especially children.
             </p>
-            <ul class="list-disc list-inside text-gray-700 mb-4 space-y-2 leading-relaxed pl-4">
+            <ul class="list-disc list-inside text-gray-700 mb-4 space-y-2 leading-relaxed pl-4 dark:text-gray-300">
                 <li>
                     The Main and Harris Hill intersection is a hazardous 5-point configuration, already problematic for both state and county authorities due to existing traffic congestion.
                     <div class="mt-4 flex justify-center">
-                        <img src="cop-accident1.jpg" alt="Scene of a police car involved accident, indicating existing traffic issues" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
-                        <p class="text-sm text-gray-600 mt-2 text-center">
+                        <a href="cop-accident1.jpg" class="image-link">
+                            <img src="cop-accident1.jpg" alt="Scene of a police car involved accident, indicating existing traffic issues" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
+                        </a>
+                        <p class="text-sm text-gray-600 mt-2 text-center dark:text-gray-400">
                             An example of existing traffic hazards in the area.
                         </p>
                     </div>
@@ -44,8 +148,10 @@
                 <li>
                     Its immediate proximity to three churches and two schools means it's an exceptionally active area with constant pedestrian and vehicle traffic.
                     <div class="mt-4 flex justify-center">
-                        <img src="school-pickup-intoroad.jpg" alt="Car during school pickup extending into the road, illustrating traffic near schools" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
-                        <p class="text-sm text-gray-600 mt-2 text-center">
+                        <a href="school-pickup-intoroad.jpg" class="image-link">
+                            <img src="school-pickup-intoroad.jpg" alt="Car during school pickup extending into the road, illustrating traffic near schools" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
+                        </a>
+                        <p class="text-sm text-gray-600 mt-2 text-center dark:text-gray-400">
                             School pickup traffic extending into the road, highlighting existing congestion near schools.
                         </p>
                     </div>
@@ -53,48 +159,58 @@
                 <li>
                     Alarmingly, the sidewalks at this intersection are frequently driven on by vehicles, creating dangerous conditions. There have been multiple documented instances where children, even with a dedicated crossing guard present, have been nearly struck by cars navigating this unsafe intersection.
                     <div class="mt-4 flex justify-center">
-                        <img src="wrong-way.jpg" alt="Car driving wrong way on Nottingham Terrace, a one-way street" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
-                        <p class="text-sm text-gray-600 mt-2 text-center">
+                        <a href="wrong-way.jpg" class="image-link">
+                            <img src="wrong-way.jpg" alt="Car driving wrong way on Nottingham Terrace, a one-way street" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
+                        </a>
+                        <p class="text-sm text-gray-600 mt-2 text-center dark:text-gray-400">
                             Example of traffic hazards: A driver going the wrong way on Nottingham Terrace, a one-way street near the intersection.
                         </p>
                     </div>
                     <div class="mt-4 flex justify-center">
-                        <img src="sidewalk-no-curb1.jpg" alt="Sidewalk without a curb, showing easy vehicle access" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
-                        <p class="text-sm text-gray-600 mt-2 text-center">
+                        <a href="sidewalk-no-curb1.jpg" class="image-link">
+                            <img src="sidewalk-no-curb1.jpg" alt="Sidewalk without a curb, showing easy vehicle access" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
+                        </a>
+                        <p class="text-sm text-gray-600 mt-2 text-center dark:text-gray-400">
                             Sidewalks with no curbs, making it easy for vehicles to drive onto them.
                         </p>
                     </div>
                     <div class="mt-4 flex justify-center">
-                        <img src="winter-car-tracks-sidewalk1.jpg" alt="Car tracks clearly visible on a snowy sidewalk" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
-                        <p class="text-sm text-gray-600 mt-2 text-center">
+                        <a href="winter-car-tracks-sidewalk1.jpg" class="image-link">
+                            <img src="winter-car-tracks-sidewalk1.jpg" alt="Car tracks clearly visible on a snowy sidewalk" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
+                        </a>
+                        <p class="text-sm text-gray-600 mt-2 text-center dark:text-gray-400">
                             Evidence of vehicles driving on sidewalks during winter conditions.
                         </p>
                     </div>
                      <div class="mt-4 flex justify-center">
-                        <img src="winter-car-tracks-sidewalk2.jpg" alt="Another view of car tracks on a snowy sidewalk" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
-                        <p class="text-sm text-gray-600 mt-2 text-center">
+                        <a href="winter-car-tracks-sidewalk2.jpg" class="image-link">
+                            <img src="winter-car-tracks-sidewalk2.jpg" alt="Another view of car tracks on a snowy sidewalk" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
+                        </a>
+                        <p class="text-sm text-gray-600 mt-2 text-center dark:text-gray-400">
                             Further evidence of vehicles driving on sidewalks during winter conditions.
                         </p>
                     </div>
                      <div class="mt-4 flex justify-center">
-                        <img src="winter-car-tracks-sidewalk3.jpg" alt="Third image showing car tracks on a snowy sidewalk" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
-                        <p class="text-sm text-gray-600 mt-2 text-center">
+                        <a href="winter-car-tracks-sidewalk3.jpg" class="image-link">
+                            <img src="winter-car-tracks-sidewalk3.jpg" alt="Third image showing car tracks on a snowy sidewalk" class="rounded-lg shadow-md max-w-full h-auto w-96 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x300/CCCCCC/333333?text=Image+Not+Found';">
+                        </a>
+                        <p class="text-sm text-gray-600 mt-2 text-center dark:text-gray-400">
                             Additional visual proof of vehicles driving on sidewalks during winter conditions.
                         </p>
                     </div>
                 </li>
                 <li>
-                    A traffic study for this proposed Tim Hortons projects a substantial increase of <strong class="font-semibold text-gray-900">114 vehicle trips entering and exiting the site</strong> (<a href="https://www4.erie.gov/clarence/sites/www4.erie.gov.clarence/files/2024-11/pb-minutes-10-16-2024.pdf" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Clarence Planning Board Minutes, 10/16/24</a>). This additional volume will exacerbate an already critical traffic and safety situation.
+                    A traffic study for this proposed Tim Hortons projects a substantial increase of <strong class="font-semibold text-gray-900 dark:text-white">114 vehicle trips entering and exiting the site</strong> (<a href="https://www4.erie.gov/clarence/sites/www4.erie.gov.clarence/files/2024-11/pb-minutes-10-16-2024.pdf" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Clarence Planning Board Minutes, 10/16/24</a>). This additional volume will exacerbate an already critical traffic and safety situation.
                 </li>
             </ul>
 
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mt-6 mb-3">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mt-6 mb-3 dark:text-white">
                 Existing Coffee Shop Locations Nearby:
             </h3>
-            <p class="text-gray-700 mb-4 leading-relaxed">
+            <p class="text-gray-700 mb-4 leading-relaxed dark:text-gray-300">
                 There are already numerous coffee shop locations within a short distance of the proposed site, questioning the need for another one that will further burden local traffic and infrastructure. Nearby locations, ordered by approximate driving distance from 8503 Main Street, include:
             </p>
-            <ul class="list-disc list-inside text-gray-700 mb-4 space-y-1 leading-relaxed pl-4">
+            <ul class="list-disc list-inside text-gray-700 mb-4 space-y-1 leading-relaxed pl-4 dark:text-gray-300">
                 <li>
                     <strong>Tim Hortons (5390 Genesee St, Lancaster, NY):</strong> Approximately 1.4 miles (3 min drive).
                 </li>
@@ -126,21 +242,21 @@
                     <strong>Tim Hortons (1060 Wehrle Drive, Williamsville, NY):</strong> Approximately 4.5-4.6 miles (10-11 min drive).
                 </li>
             </ul>
-            <p class="text-gray-700 mb-4 leading-relaxed">
+            <p class="text-gray-700 mb-4 leading-relaxed dark:text-gray-300">
                 This density of existing coffee shops suggests that the community's demand is already well-met, and adding another at such a critical intersection is unnecessary and detrimental.
             </p>
         </div>
 
         <div class="mb-8">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 dark:text-white">
                 Councilman Casilio's Inconsistent Stance
             </h2>
-            <p class="text-gray-700 mb-4 leading-relaxed">
+            <p class="text-gray-700 mb-4 leading-relaxed dark:text-gray-300">
                 A disturbing element in this discussion is the apparent inconsistency in Councilman Casilio's position on such developments.
             </p>
-            <ul class="list-disc list-inside text-gray-700 mb-4 space-y-2 leading-relaxed pl-4">
+            <ul class="list-disc list-inside text-gray-700 mb-4 space-y-2 leading-relaxed pl-4 dark:text-gray-300">
                 <li>
-                    In 2014, Councilman Casilio vocally opposed a similar Tim Hortons proposal at 8250 Main Street (approximately 0.2 miles from his residence). He explicitly voiced concerns that "<strong class="font-semibold text-gray-900">60 customers or more</strong>" would cause a "traffic jam" on Westwood Road (<a href="https://www4.erie.gov/clarence/sites/www4.erie.gov.clarence/files/2023-02/ws-tb_5-14-14.pdf" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Clarence Town Board Minutes, 05/14/14</a>).
+                    In 2014, Councilman Casilio vocally opposed a similar Tim Hortons proposal at 8250 Main Street (approximately 0.2 miles from his residence). He explicitly voiced concerns that "<strong class="font-semibold text-gray-900 dark:text-white">60 customers or more</strong>" would cause a "traffic jam" on Westwood Road (<a href="https://www4.erie.gov/clarence/sites/www4.erie.gov.clarence/files/2023-02/ws-tb_5-14-14.pdf" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Clarence Town Board Minutes, 05/14/14</a>).
                 </li>
                 <li>
                     The current proposal at 8503 Main Street projects almost double that traffic (114 vehicle trips), at an intersection far more dangerous and congested than the site he previously opposed. Yet, there seems to be less opposition from him on this significantly higher-impact project.
@@ -149,10 +265,16 @@
                     Adding to the irony, Councilman Casilio has stated, "The Town of Clarence is not in the development business... that area is zoned for a coffee shop. The owner... has a right to ask to open up a coffee business there." This statement contrasts with the fact that he himself owns <a href="https://casilioco.com/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">CasilioCo.com</a>, a property development company.
                 </li>
             </ul>
-            <p class="text-gray-700 mb-4 leading-relaxed">
+            <p class="text-gray-700 mb-4 leading-relaxed dark:text-gray-300">
                 This inconsistency undermines public trust. It is precisely the job of elected representatives to advocate for their constituents, ensure that laws and zoning benefit the community, and to initiate or support changes to regulations when existing rules lead to detrimental outcomes like this. Our elected officials must demonstrate transparency, accountability, and consistent leadership, applying the same standards across all community areas.
             </p>
         </div>
+    </div>
+
+    <!-- The Modal Structure -->
+    <div id="imageModal" class="modal">
+        <span class="close-button" title="Close Modal">&times;</span>
+        <img class="modal-content" id="modalImage" alt="Enlarged Image">
     </div>
 </body>
 </html>
